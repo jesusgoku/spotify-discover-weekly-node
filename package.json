@@ -1,0 +1,15 @@
+{
+  "name": "node-spotify",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "node -r dotenv/config src/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^5.0.1",
+    "spotify-web-api-node": "^3.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1"
+  }
+}
