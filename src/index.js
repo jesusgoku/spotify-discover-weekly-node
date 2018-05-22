@@ -33,7 +33,7 @@ const scopes = ['user-read-private', 'playlist-modify-private' ];
 
 spotifyApi
   .getMe()
-  .catch(() => spotifyApi.refreshAccessToken().then(res => updateAccessToken(spotifyApi)))
+  .catch(() => spotifyApi.refreshAccessToken().then(updateAccessToken(spotifyApi)))
   .then(() => Promise.all([
     spotifyApi.getMe().then(res => res.body.id),
     spotifyApi.searchPlaylists(discoverWeeklyPlaylist).then(res => res.body.playlists.items[0]),
