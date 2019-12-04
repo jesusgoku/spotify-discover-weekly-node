@@ -11,8 +11,8 @@ function extractTrackUri(data) {
   return data.body.tracks.items.map(i => i.track.uri);
 }
 
-function extractPlaylistId(data) {
-  return data.body;
+function extractBody({ body }) {
+  return body;
 }
 
 spotifyApi.setAccessToken(process.env.SPOTIFY_ACCESS_TOKEN);
@@ -24,35 +24,33 @@ const playlistOptions = {
   public: false,
 };
 
-spotifyApi
-  .getMe()
-  .catch(() =>
-    spotifyApi
-      .refreshAccessToken()
-      .then(({ body }) => body)
-      .then(({ access_token: accessToken }) => spotifyApi.setAccessToken(accessToken)),
-  )
-  .then(() =>
-    Promise.all([
-      spotifyApi.getMe().then(res => res.body.id),
-      spotifyApi.searchPlaylists(discoverWeeklyPlaylist).then(res => res.body.playlists.items[0]),
-    ]),
-  )
-  .then(([username, weeklyPlaylist]) => ({
-    username,
-    weeklyPlaylist,
-  }))
-  .then(({ username, weeklyPlaylist }) =>
-    Promise.all([
-      spotifyApi.createPlaylist(username, playlistName, playlistOptions).then(extractPlaylistId),
+(async () => {
+  let username = null; // eslint-disable-line no-unused-vars
+
+  try {
+    const { id } = await spotifyApi.getMe().then(extractBody);
+    username = id;
+  } catch (e) {
+    const { access_token: accessToken } = await spotifyApi.refreshAccessToken().then(extractBody);
+    spotifyApi.setAccessToken(accessToken);
+
+    const { id } = await spotifyApi.getMe().then(extractBody);
+    username = id;
+  }
+
+  try {
+    const { playlists } = await spotifyApi
+      .searchPlaylists(discoverWeeklyPlaylist)
+      .then(extractBody);
+    const weeklyPlaylist = playlists.items[0];
+
+    const [playlist, tracks] = await Promise.all([
+      spotifyApi.createPlaylist(username, playlistName, playlistOptions).then(extractBody),
       spotifyApi.getPlaylist(weeklyPlaylist.owner.id, weeklyPlaylist.id).then(extractTrackUri),
-    ]),
-  )
-  .then(([playlist, tracks]) => ({
-    playlist,
-    tracks,
-  }))
-  .then(({ playlist, tracks }) =>
-    spotifyApi.addTracksToPlaylist(playlist.owner.id, playlist.id, tracks),
-  )
-  .catch(handleError);
+    ]);
+
+    await spotifyApi.addTracksToPlaylist(playlist.owner.id, playlist.id, tracks);
+  } catch (e) {
+    handleError(e);
+  }
+})();
