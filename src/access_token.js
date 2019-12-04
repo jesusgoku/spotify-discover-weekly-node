@@ -12,14 +12,18 @@ Open next url on browser: ${authorizationUrl}
 > Copy and paste generated Authorization Code
 `);
 
-question('Ingress authorization code')
-  .then(authorizationCode => spotifyApi.authorizationCodeGrant(authorizationCode))
-  .then(({ body }) => body)
-  .then(({ access_token: accessToken, refresh_token: refreshToken }) =>
+(async () => {
+  try {
+    const authorizationCode = await question('Ingress authorization code');
+    const { body } = await spotifyApi.authorizationCodeGrant(authorizationCode);
+    const { access_token: accessToken, refresh_token: refreshToken } = body;
+
     console.log(`
-Add both token to .env file
-  - ACCESS_TOKEN: ${accessToken}
-  - REFRESH_TOKEN: ${refreshToken}
-`),
-  )
-  .catch(handleError);
+    Add both token to .env file
+      - ACCESS_TOKEN: ${accessToken}
+      - REFRESH_TOKEN: ${refreshToken}
+    `);
+  } catch (e) {
+    handleError(e);
+  }
+})();
