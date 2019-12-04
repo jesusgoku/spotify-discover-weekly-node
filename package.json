@@ -3,13 +3,22 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "node -r dotenv/config src/index.js"
+    "start": "node -r dotenv/config -r esm src",
+    "access_token": "node -r dotenv/config -r esm src/access_token.js",
+    "code:check": "yarn code:lint; yarn code:format --check",
+    "code:clean": "yarn code:lint --fix; yarn code:format --write",
+    "code:lint": "eslint --ext .js,.jsx,.ts,.tsx \"src/\"",
+    "code:format": "prettier './src/**/**.{js,jsx,ts,tsx}'",
+    "code:check:rules": "eslint --print-config .eslintrc.js | eslint-config-prettier-check"
   },
   "dependencies": {
     "dotenv": "^5.0.1",
+    "esm": "^3.2.25",
     "spotify-web-api-node": "^3.1.1"
   },
   "devDependencies": {
-    "eslint": "^4.19.1"
+    "husky": "^3.1.0",
+    "poetic": "^1.2.1",
+    "yargs": "^15.0.2"
   }
 }
