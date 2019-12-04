@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "node -r dotenv/config src/index.js",
+    "start": "node -r dotenv/config -r esm src",
+    "access_token": "node -r dotenv/config -r esm src/access_token.js",
     "code:check": "yarn code:lint; yarn code:format --check",
     "code:clean": "yarn code:lint --fix; yarn code:format --write",
     "code:lint": "eslint --ext .js,.jsx,.ts,.tsx \"src/\"",
@@ -12,9 +13,11 @@
   },
   "dependencies": {
     "dotenv": "^5.0.1",
+    "esm": "^3.2.25",
     "spotify-web-api-node": "^3.1.1"
   },
   "devDependencies": {
+    "husky": "^3.1.0",
     "poetic": "^1.2.1",
     "yargs": "^15.0.2"
   }
