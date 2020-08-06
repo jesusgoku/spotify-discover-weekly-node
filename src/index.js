@@ -2,21 +2,22 @@
 
 import spotifyApi from './services/spotify';
 import { handleError, firstDayOfWeek, YYYYMMDDFormat } from './tools/utils';
+import { SPOTIFY_ACCESS_TOKEN, SPOTIFY_REFRESH_TOKEN } from './config';
 
 /** ****************************************
  * Functions
  */
 
 function extractTrackUri(data) {
-  return data.body.tracks.items.map(i => i.track.uri);
+  return data.body.tracks.items.map((i) => i.track.uri);
 }
 
 function extractBody({ body }) {
   return body;
 }
 
-spotifyApi.setAccessToken(process.env.SPOTIFY_ACCESS_TOKEN);
-spotifyApi.setRefreshToken(process.env.SPOTIFY_REFRESH_TOKEN);
+spotifyApi.setAccessToken(SPOTIFY_ACCESS_TOKEN);
+spotifyApi.setRefreshToken(SPOTIFY_REFRESH_TOKEN);
 
 const discoverWeeklyPlaylist = 'Discover Weekly';
 const playlistName = `Lista Semanal ${YYYYMMDDFormat(firstDayOfWeek())}`;
