@@ -8,19 +8,40 @@ Backup your personal **Discover Weekly**.
 # Install depedencies
 yarn install
 
-# Create .env file and complete
-cp .env.dist .env
-
 # If not ACCESS_TOKEN AND REFRESH_TOKEN
 yarn run access_token
+```
 
-# Execute
-yarn start
+Create config file called `.spotifydwbrc` into current or HOME directory:
+
+```json
+{
+  "SPOTIFY_CLIENT_ID": "",
+  "SPOTIFY_CLIENT_SECRET": "",
+  "SPOTIFY_REDIRECT_URI": "",
+  "SPOTIFY_ACCESS_TOKEN": "",
+  "SPOTIFY_REFRESH_TOKEN": ""
+}
+```
+
+## Running
+
+```shell
+yarn run start
 ```
 
 ## Another tools
 
 ```shell
-# Lint code
+# Check lint and format
+yarn run code:check
+
+# Apply lint fix and format
+yarn run code:clean
+
+# Only check lint
 yarn run code:lint
+
+# Only check format
+yarn run code:format
 ```
