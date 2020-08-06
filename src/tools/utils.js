@@ -11,8 +11,11 @@ function handleConsoleAndReturn(data) {
 }
 
 /**
+ * Get Date object for first day of week
  *
- * @param {Date} initialDate initial
+ * @param {Date} initialDate - initial
+ *
+ * @returns {Date} - Date object for first day of week
  */
 function firstDayOfWeek(initialDate) {
   const d = initialDate ? new Date(initialDate) : new Date();
@@ -31,13 +34,13 @@ function YYYYMMDDFormat(d) {
 }
 
 function question(questionStr) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const read = createInterface({
       input: process.stdin,
       output: process.stdout,
     });
 
-    read.question(`${questionStr}: `, answer => {
+    read.question(`${questionStr}: `, (answer) => {
       read.close();
 
       resolve(answer);
