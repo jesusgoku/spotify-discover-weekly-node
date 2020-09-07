@@ -16,7 +16,7 @@
     "esm": "^3.2.25",
     "joi": "^17.2.0",
     "rc": "^1.2.8",
-    "spotify-web-api-node": "^3.1.1"
+    "spotify-web-api-node": "^4"
   },
   "devDependencies": {
     "husky": "^3.1.0",

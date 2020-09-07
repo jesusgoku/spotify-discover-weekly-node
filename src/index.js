@@ -47,10 +47,10 @@ const playlistOptions = {
 
     const [playlist, tracks] = await Promise.all([
       spotifyApi.createPlaylist(username, playlistName, playlistOptions).then(extractBody),
-      spotifyApi.getPlaylist(weeklyPlaylist.owner.id, weeklyPlaylist.id).then(extractTrackUri),
+      spotifyApi.getPlaylist(weeklyPlaylist.id).then(extractTrackUri),
     ]);
 
-    await spotifyApi.addTracksToPlaylist(playlist.owner.id, playlist.id, tracks);
+    await spotifyApi.addTracksToPlaylist(playlist.id, tracks);
   } catch (e) {
     handleError(e);
   }
